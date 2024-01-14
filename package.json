@@ -10,9 +10,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dist": {
-    "index": "./dist/index.js"
-  },
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
