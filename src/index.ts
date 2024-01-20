@@ -2,6 +2,7 @@ import { program } from "commander";
 import inquirer, { Answers, QuestionCollection } from "inquirer";
 import StreamManager from "./models/StreamManager";
 import Viewer from "./models/Viewer";
+import StreamHandler from "./models/StreamHandler";
 
 const questions: QuestionCollection = [
   {
@@ -16,27 +17,24 @@ const questions: QuestionCollection = [
   },
 ];
 
+let streamHandler: StreamHandler;
+
 program
   .command("start")
   .description("Start a new stream")
   .action(async () => {
     const answers: Answers = await inquirer.prompt(questions);
 
-    const streamManager = StreamManager.getInstance();
-    const streamId = streamManager.createStream(
-      answers.name,
-      answers.description
-    );
-
-    console.log(`Stream started with ID: ${streamId}`);
+    streamHandler = StreamHandler.getInstance();
+    await streamHandler.startStream(answers.name, answers.description);
   });
 
 program
   .command("join <streamId>")
   .description("Join an existing steram")
-  .action((streamId) => {
-    const viewer = new Viewer(StreamManager.getInstance());
-    viewer.watchStream(streamId);
+  .action(async (streamId) => {
+    streamHandler = StreamHandler.getInstance();
+    await streamHandler.joinStream(streamId);
   });
 
 program.parse(process.argv);

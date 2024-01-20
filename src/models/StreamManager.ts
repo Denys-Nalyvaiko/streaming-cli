@@ -26,6 +26,10 @@ class StreamManager {
   public getStreamById(id: string): Stream | undefined {
     return this.streams.get(id);
   }
+
+  public getAllStreams(): Map<string, Stream> {
+    return this.streams;
+  }
 }
 
 export default StreamManager;
