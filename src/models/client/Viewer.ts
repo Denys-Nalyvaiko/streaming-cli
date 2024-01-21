@@ -1,6 +1,7 @@
 import * as SocketIOClient from "socket.io-client";
-// import inquirer from "inquirer";
-import { prompt } from "enquirer";
+// import { prompt } from "enquirer";
+import pkg from "enquirer";
+const { prompt } = pkg;
 
 class Viewer {
   private socket: SocketIOClient.Socket;
