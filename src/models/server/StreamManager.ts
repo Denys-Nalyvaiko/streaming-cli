@@ -10,25 +10,22 @@ class StreamManager {
     if (!StreamManager.instance) {
       StreamManager.instance = new StreamManager();
     }
-
     return StreamManager.instance;
   }
 
-  public createStream(name: string, description: string): string {
-    const stream = new Stream(name, description);
-    const streamId = stream.getId();
-
+  public createStream(): Stream {
+    const streamId = Math.random().toString(36).substring(7);
+    const stream = new Stream(streamId);
     this.streams.set(streamId, stream);
-
-    return streamId;
+    return stream;
   }
 
   public getStreamById(id: string): Stream | undefined {
     return this.streams.get(id);
   }
 
-  public getAllStreams(): Map<string, Stream> {
-    return this.streams;
+  public removeStreamById(id: string): void {
+    this.streams.delete(id);
   }
 }
 

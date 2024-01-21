@@ -15,7 +15,8 @@
     "strictNullChecks": true,
     "target": "es2019",
     "sourceMap": true,
-    "typeRoots": ["node_modules/@types"]
+    "downlevelIteration": true,
+    "types": ["node", "socket.io-client"]
   },
   "include": ["**/*.ts"]
 }
