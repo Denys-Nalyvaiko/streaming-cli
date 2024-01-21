@@ -23,6 +23,18 @@ const serverAction = () => {
     res.send(`Stream started with ID: ${stream.getId()}`);
   });
 
+  app.get("/kick/:streamId/:viewerId", (req, res) => {
+    const { streamId, viewerId } = req.params;
+    const stream = streamManager.getStreamById(streamId);
+
+    if (stream) {
+      stream.removeViewer(viewerId);
+      res.send(`Kicked viewer ${viewerId} from stream ${streamId}`);
+    } else {
+      res.status(404).send(`Stream with ${streamId} not found`);
+    }
+  });
+
   server.listen(PORT, () => {
     console.log("Server is running on port", PORT);
   });
