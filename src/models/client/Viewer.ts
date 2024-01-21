@@ -1,5 +1,4 @@
 import * as SocketIOClient from "socket.io-client";
-// import { prompt } from "enquirer";
 import pkg from "enquirer";
 const { prompt } = pkg;
 
