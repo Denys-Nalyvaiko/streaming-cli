@@ -8,10 +8,9 @@ var Streamer = /** @class */ (function () {
         this.stream = stream;
         this.stream.addObserver(this);
         this.io.on("connection", function (socket) {
-            // console.log(`New viewer connected: ${socket.id}`);
-            // socket.join(this.stream.getId());
             socket.on("disconnect", function () {
                 console.log("Viewer disconnected: ".concat(socket.id));
+                _this.stream.removeObserver(_this);
             });
             socket.on("join", function (streamId) {
                 var requestedStream = StreamManager_1.default.getInstance().getStreamById(streamId);
@@ -25,7 +24,6 @@ var Streamer = /** @class */ (function () {
             });
             socket.on("message", function (message) {
                 console.log("[Viewer] Message from ".concat(socket.id, ": ").concat(message));
-                _this.stream.notifyObservers("[Viewer] ".concat(socket.id, ": ").concat(message));
             });
         });
     }

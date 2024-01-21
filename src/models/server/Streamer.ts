@@ -13,11 +13,9 @@ class Streamer implements Observer {
     this.stream.addObserver(this);
 
     this.io.on("connection", (socket) => {
-      // console.log(`New viewer connected: ${socket.id}`);
-      // socket.join(this.stream.getId());
-
       socket.on("disconnect", () => {
         console.log(`Viewer disconnected: ${socket.id}`);
+        this.stream.removeObserver(this);
       });
 
       socket.on("join", (streamId: string) => {
@@ -36,7 +34,6 @@ class Streamer implements Observer {
 
       socket.on("message", (message: string) => {
         console.log(`[Viewer] Message from ${socket.id}: ${message}`);
-        this.stream.notifyObservers(`[Viewer] ${socket.id}: ${message}`);
       });
     });
   }
