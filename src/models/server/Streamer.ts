@@ -1,6 +1,7 @@
 import * as socketIo from "socket.io";
 import Observer from "./interfaces/Observer";
 import Stream from "./Stream";
+import StreamManager from "./StreamManager";
 
 class Streamer implements Observer {
   private io: socketIo.Server;
@@ -12,11 +13,25 @@ class Streamer implements Observer {
     this.stream.addObserver(this);
 
     this.io.on("connection", (socket) => {
-      console.log(`New viewer connected: ${socket.id}`);
-      socket.join(this.stream.getId());
+      // console.log(`New viewer connected: ${socket.id}`);
+      // socket.join(this.stream.getId());
 
       socket.on("disconnect", () => {
         console.log(`Viewer disconnected: ${socket.id}`);
+      });
+
+      socket.on("join", (streamId: string) => {
+        const requestedStream =
+          StreamManager.getInstance().getStreamById(streamId);
+
+        if (requestedStream) {
+          socket.join(requestedStream.getId());
+          console.log(
+            `Viewer ${socket.id} joined stream ${requestedStream.getId()}`
+          );
+        } else {
+          console.log(`Stream with ID ${streamId} not found.`);
+        }
       });
 
       socket.on("message", (message: string) => {
