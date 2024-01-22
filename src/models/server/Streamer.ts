@@ -28,6 +28,8 @@ class Streamer implements Observer {
           console.log(
             `Viewer ${socket.id} joined stream ${requestedStream.getId()}`
           );
+
+          requestedStream.addViewer(socket.id, "Annonymous");
         } else {
           console.log(`Stream with ID ${streamId} not found.`);
         }

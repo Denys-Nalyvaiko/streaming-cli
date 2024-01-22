@@ -21,9 +21,7 @@ class Viewer {
     this.socket.on("viewers-list", (viewers: StreamViewer[]) => {
       console.log("Viewer list:");
 
-      viewers.forEach((viewer) =>
-        console.log(`- ${viewer.getUserName()} (${viewer.getId()})`)
-      );
+      viewers.forEach((viewer) => console.log("-", viewer.id));
 
       this.handleUserInput();
     });

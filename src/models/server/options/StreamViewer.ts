@@ -1,5 +1,5 @@
 class StreamViewer {
-  private id: string;
+  public id: string;
   private username: string;
 
   constructor(id: string, username: string) {
@@ -10,6 +10,7 @@ class StreamViewer {
   public getId(): string {
     return this.id;
   }
+
   public getUserName(): string {
     return this.username;
   }
