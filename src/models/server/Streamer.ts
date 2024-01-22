@@ -44,6 +44,7 @@ class Streamer implements Observer {
         if (viewer) {
           this.stream.donate(viewer.getUserName(), amount);
         }
+        console.log(`[Viewer] ${socket.id} donated ${amount}`);
       });
 
       socket.on("message", (message: string) => {
