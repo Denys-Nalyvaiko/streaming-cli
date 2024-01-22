@@ -28,10 +28,27 @@ const serverAction = () => {
     const stream = streamManager.getStreamById(streamId);
 
     if (stream) {
-      stream.removeViewer(viewerId);
-      res.send(`Kicked viewer ${viewerId} from stream ${streamId}`);
+      const viewer = stream.getViewer(viewerId);
+
+      if (viewer) {
+        stream.removeViewer(viewerId);
+
+        const connectedSockets = io.sockets.sockets;
+        const socket = connectedSockets.get(viewerId);
+
+        if (socket) {
+          socket.disconnect();
+          res.send(`Kicked viewer ${viewerId} from stream ${streamId}`);
+        } else {
+          res.status(500).send(`Failed to disconnect viewer ${viewerId}`);
+        }
+      } else {
+        res
+          .status(404)
+          .send(`Viewer with ID ${viewerId} not found in stream ${streamId}`);
+      }
     } else {
-      res.status(404).send(`Stream with ${streamId} not found`);
+      res.status(404).send(`Stream with ID ${streamId} not found`);
     }
   });
 

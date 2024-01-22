@@ -37,7 +37,14 @@ class Stream implements Observer {
   }
 
   public removeViewer(viewerId: string): void {
-    this.viewers.delete(viewerId);
+    const removedViewer = this.viewers.get(viewerId);
+
+    if (removedViewer) {
+      this.viewers.delete(viewerId);
+      this.sendMessageToViewers(
+        `Viewer ${viewerId} has been kicked from the stream`
+      );
+    }
   }
 
   public getViewerList(): StreamViewer[] {
@@ -65,9 +72,6 @@ class Stream implements Observer {
   public donate(donor: string, amount: number): void {
     const donation = new Donation(donor, amount);
     this.stats.addDonation(donation);
-    this.sendMessageToViewers(
-      `Thank you ${donor} for the donation of ${amount}`
-    );
   }
 
   public update(message: string): void {

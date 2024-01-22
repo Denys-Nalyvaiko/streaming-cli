@@ -28,6 +28,7 @@ class Viewer {
 
     this.socket.on("disconnect", () => {
       console.log("Disconnected from server.");
+      process.exit();
     });
   }
 
