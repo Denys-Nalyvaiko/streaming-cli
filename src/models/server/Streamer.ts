@@ -16,6 +16,7 @@ class Streamer implements Observer {
       socket.on("disconnect", () => {
         console.log(`Viewer disconnected: ${socket.id}`);
         this.stream.removeObserver(this);
+        this.stream.removeViewer(socket.id);
       });
 
       socket.on("join", (streamId: string) => {
@@ -27,9 +28,25 @@ class Streamer implements Observer {
           console.log(
             `Viewer ${socket.id} joined stream ${requestedStream.getId()}`
           );
+
+          requestedStream.addViewer(socket.id, "Annonymous");
         } else {
           console.log(`Stream with ID ${streamId} not found.`);
         }
+      });
+
+      socket.on("show-viewers", () => {
+        const viewers = this.stream.showViewerList();
+        socket.emit("viewers-list", viewers);
+      });
+
+      socket.on("donate", (amount: number) => {
+        const viewer = this.stream.getViewer(socket.id);
+
+        if (viewer) {
+          this.stream.donate(viewer.getUserName(), amount);
+        }
+        console.log(`[Viewer] ${socket.id} donated ${amount}`);
       });
 
       socket.on("message", (message: string) => {

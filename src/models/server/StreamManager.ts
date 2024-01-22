@@ -1,4 +1,5 @@
 import Stream from "./Stream";
+import StreamViewer from "./options/StreamViewer";
 
 class StreamManager {
   private static instance: StreamManager;
@@ -26,6 +27,19 @@ class StreamManager {
 
   public removeStreamById(id: string): void {
     this.streams.delete(id);
+  }
+
+  public getViewerById(
+    streamId: string,
+    viewerId: string
+  ): StreamViewer | undefined {
+    const stream = this.getStreamById(streamId);
+
+    if (stream) {
+      return stream.getViewer(viewerId);
+    }
+
+    return undefined;
   }
 }
 
